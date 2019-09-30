@@ -10,6 +10,13 @@ MAINTAINER KBase Developer
 
 
 # -----------------------------------------
+RUN conda install -c bioconda numpy scipy metaphlan2 graphlan export2graphlan && \
+    conda clean -ya
+
+#  'axisbg' in 'artist.py' has changed to 'facecolor' from matplotlib v2.2.3
+RUN /opt/conda/bin/pip uninstall -y matplotlib && /opt/conda/bin/pip install matplotlib==2.1.0
+
+#  Entry
 
 COPY ./ /kb/module
 RUN mkdir -p /kb/module/work
