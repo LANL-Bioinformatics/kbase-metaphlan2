@@ -92,15 +92,16 @@ class metaphlan2:
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
 
-        cmd = ['metaphlan2.py', '--input_type', 'fastq', fastq_files_string]
+        cmd = ['metaphlan2.py', '--input_type', 'fastq', fastq_files_string, 'report.txt']
         logging.info(f'cmd {cmd}')
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE,
                              stderr=subprocess.STDOUT)
         logging.info(f'subprocess {p.communicate()}')
 
+        logging.info(f"params['input_refs'] {params['input_refs']}")
         report = KBaseReport(self.callback_url)
         report_info = report.create({'report': {'objects_created':[],
-                                                'text_message': params['input_refs']},
+                                                'text_message': params['input_refs'][0]},
                                                 'workspace_name': params['workspace_name']})
         output = {
             'report_name': report_info['name'],
