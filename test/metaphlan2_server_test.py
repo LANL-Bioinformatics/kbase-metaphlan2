@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import os
 import time
+import logging
+import subprocess
 import unittest
 from configparser import ConfigParser
 
@@ -65,5 +67,23 @@ class metaphlan2Test(unittest.TestCase):
         # self.assertEqual(ret[...], ...) or other unittest methods
         input_refs = ['22956/3/1']
         ret = self.serviceImpl.run_metaphlan2(self.ctx, {'workspace_name': self.wsName,
-                                                         'input_refs': input_refs,})
+                                                         'input_refs': input_refs,
+                                                         'tax_level': 'k',
+                                                         'min_cu_len': 1000,
+                                                         'min_alignment_len': 0
+                                                         })
         print(f'ret {ret[0]}')
+
+    def test_metaphlan2(self):
+        cmd = ['metaphlan2.py', '--input_type', 'fastq', '/data/metaphlan2/test.fastq', 'metaphlan2_report.txt']
+        logging.info(f'cmd {cmd}')
+        p = subprocess.Popen(cmd, stdout=subprocess.PIPE,
+                             stderr=subprocess.STDOUT)
+        logging.info(p.communicate())
+
+        self.assertTrue(os.path.exists('metaphlan2_report.txt'))
+        with open('metaphlan2_report.txt', 'r') as fp:
+            logging.info('print summary')
+            lines = fp.readlines()
+            for line in lines:
+                logging.info(line.split('\t')[-1].strip())

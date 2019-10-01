@@ -38,13 +38,55 @@ parameters :
         short-hint: |
             minimum total nucleotide length for the markers in a clade for |
             estimating the abundance without considering sub-clade abundances
+    min_alignment_len:
+        ui-name: |
+            Min alignment length
+        short-hint: |
+            The sam records for aligned reads with the longest subalignment |
+            length smaller than this threshold will be discarded.
+    ignore_viruses:
+        ui-name: |
+            Ignore viruses
+        short-hint: |
+            Do not profile viral organisms
+#    ignore_eukaryotes:
+#        ui-name: |
+#            Ignore eukaryotes
+#        short-hint: |
+#            Do not profile eukaryotic organisms
+#    ignore_bacteria:
+#        ui-name: |
+#            Ignore bacteria
+#        short-hint: |
+#            Do not profile bacterial organisms
+#    ignore_archaea:
+#        ui-name: |
+#            Ignore archaea
+#        short-hint: |
+#            Do not profile archeal organisms
+#    stat_q:
+#        ui-name: |
+#            Robust average value
+#        short-hint: |
+#            Quantile value for the robust average
 
 description : |
-    <p>This is a KBase wrapper for Kraken2, a novel, gene-independent, and signature-based metagenomic taxonomic profiling tool with low false discovery rates (FDR). GOTTCHA2 has been tested and validated on twenty synthetic and mock datasets ranging in community composition and complexity, was applied successfully to data generated from spiked environmental and clinical samples, and robustly demonstrates superior performance compared with other available tools.</p>
+    <p>This is a KBase wrapper for MetaPhlAn, a computational tool for profiling the composition of microbial communities (Bacteria, Archaea, Eukaryotes and Viruses) from metagenomic shotgun sequencing data (i.e. not 16S) with species-level. With the newly added StrainPhlAn module, it is now possible to perform accurate strain-level microbial profiling.</p>
 
-        <p>GOTTCHA2 takes either a metagenomic reads library or a reads set as input. Parameters can be set for the reference database and for minimum thresholds for the abundance calculations. GOTTCHA2 uses two reference databases for classification, which can be downloaded from the <a href="https://edge-dl.lanl.gov/GOTTCHA2/RefSeq-Release90/">GOTTCHA2 webserver page</a> (last updated 2018-11-10). The databases are:
+        <p>MetaPhlAn 2 relies on ~1M unique clade-specific marker genes (the marker information file mpa_v20_m200_marker_info.txt.bz2 can be found in the Download page here) identified from ~17,000 reference genomes (~13,500 bacterial and archaeal, ~3,500 viral, and ~110 eukaryotic), allowing:
           <ul>
-            <li><b>RefSeq Bacteria, Archaea and Viruses</b>: Nucleotide unique signature sequences built from NCBI RefSeq Release 90.</li>
-            <li><b>RefSeq Fungal </b>: Fungal Nucleotide unique signature sequences built from NCBI RefSeq Release 90. </li>
+            <li>unambiguous taxonomic assignments;</li>
+            <li>accurate estimation of organismal relative abundance;</li>
+            <li>species-level resolution for bacteria, archaea, eukaryotes and viruses;</li>
+            <li>strain identification and tracking</li>
+            <li>orders of magnitude speedups compared to existing methods.</li>
+            <li>metagenomic strain-level population genomics</li>
           </ul>
         </p>
+
+publications :
+    -
+        pmid: 25765641
+        display-text : |
+            Duy Tin Truong, Eric A Franzosa, Timothy L Tickle, Matthias Scholz, George Weingart, Edoardo Pasolli, Adrian Tett, Curtis Huttenhower & Nicola Segata. Nature Methods 12, 902-903 (2015)
+        link: http://www.nature.com/nmeth/journal/v12/n10/pdf/nmeth.3589.pdf

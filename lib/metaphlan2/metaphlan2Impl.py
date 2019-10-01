@@ -87,12 +87,17 @@ class metaphlan2:
                 fastq_files_name.append(val['files']['rev_name'])
         logging.info(f"fastq files {fastq_files}")
         fastq_files_string = ' '.join(fastq_files)
+        cmd = ['metaphlan2.py', '--input_type', 'fastq', fastq_files_string]
+
         output_dir = os.path.join(self.scratch, 'metaphlan2_output')
 
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
 
-        cmd = ['metaphlan2.py', '--input_type', 'fastq', fastq_files_string, 'report.txt']
+        cmd.extend(['--min_alignment_len', params['min_alignment_len']]) if params['min_alignment_len'] > 0 else cmd
+        cmd.append('--ignore_viruses') if params['ignore_viruses'] == 1 else cmd
+
+        cmd.append('report.txt')
         logging.info(f'cmd {cmd}')
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE,
                              stderr=subprocess.STDOUT)

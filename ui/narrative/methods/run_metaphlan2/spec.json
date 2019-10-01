@@ -34,6 +34,18 @@
             }
         },
         {
+            "id": "min_alignment_len",
+            "optional": true,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "0" ],
+            "field_type": "text",
+            "text_options": {
+                "validate_as": "int",
+                "min_integer" : 0
+            }
+        },
+        {
             "id": "tax_lev",
             "optional": true,
             "advanced": true,
@@ -67,7 +79,24 @@
                     "display": "Species only"
                 }]
             }
-        }
+        },
+        {
+             "id" : "ignore_viruses",
+             "default_values" : [
+                "0"
+             ],
+             "advanced" : true,
+             "checkbox_options" : {
+                "unchecked_value" : 0,
+                "checked_value" : 1
+             },
+             "text_options" : {
+                "valid_ws_types" : []
+             },
+             "field_type" : "checkbox",
+             "allow_multiple" : false,
+             "optional" : true
+      }
     ],
     "behavior": {
         "service-mapping": {
@@ -93,8 +122,16 @@
 					"target_property": "min_cu_len"
 				},
 				{
+					"input_parameter": "min_alignment_len",
+					"target_property": "min_alignment_len"
+				},
+				{
 					"input_parameter": "tax_lev",
 					"target_property": "tax_lev"
+				},
+				{
+					"input_parameter": "ignore_viruses",
+					"target_property": "ignore_viruses"
 				}
             ],
             "output_mapping": [
