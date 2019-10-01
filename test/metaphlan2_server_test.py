@@ -63,7 +63,7 @@ class metaphlan2Test(unittest.TestCase):
         #
         # Check returned data with
         # self.assertEqual(ret[...], ...) or other unittest methods
-        input_refs = ['22956/5/2']
+        input_refs = ['22956/3/1']
         ret = self.serviceImpl.run_metaphlan2(self.ctx, {'workspace_name': self.wsName,
                                                          'input_refs': input_refs,})
         print(f'ret {ret[0]}')

@@ -20,6 +20,56 @@
             "text_options": {
                 "valid_ws_types": [ "KBaseSets.ReadsSet", "KBaseFile.PairedEndLibrary", "KBaseFile.SingleEndLibrary" ]
             }
+        },
+        {
+            "id": "min_cu_len",
+            "optional": true,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "2000" ],
+            "field_type": "text",
+            "text_options": {
+                "validate_as": "int",
+                "min_integer" : 0
+            }
+        },
+        {
+            "id": "tax_lev",
+            "optional": true,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "a" ],
+            "field_type": "text",
+            "text_options": {
+                "validate_as": "text"
+            },
+            "dropdown_options":{
+                "options": [{
+                    "value": "a",
+                    "display": "All taxonomic levels"
+                }, {
+                    "value": "k",
+                    "display": "Kingdoms (Bacteria and Archaea) only"
+                }, {
+                    "value": "p",
+                    "display": "Phyla only"
+                }, {
+                    "value": "c",
+                    "display": "Classes only"
+                }, {
+                    "value": "o",
+                    "display": "Orders only"
+                }, {
+                    "value": "f",
+                    "display": "Families only"
+                }, {
+                    "value": "g",
+                    "display": "Genera only"
+                }, {
+                    "value": "s",
+                    "display": "Species only"
+                }]
+            }
         }
     ],
     "behavior": {
@@ -31,14 +81,24 @@
                 {
                     "narrative_system_variable": "workspace",
                     "target_property": "workspace_name"
-                },{
+                },
+                {
                     "narrative_system_variable": "workspace_id",
                     "target_property": "workspace_id"
-                },{
+                },
+                {
                     "input_parameter": "input_refs",
                     "target_property": "input_refs",
 					"target_type_transform": "list<resolved-ref>"
-                }
+                },
+				{
+					"input_parameter": "min_cu_len",
+					"target_property": "min_cu_len"
+				},
+				{
+					"input_parameter": "tax_lev",
+					"target_property": "tax_lev"
+				}
             ],
             "output_mapping": [
                 {
