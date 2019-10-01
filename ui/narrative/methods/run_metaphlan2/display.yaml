@@ -1,10 +1,10 @@
 #
 # define display information
 #
-name: Method Name Here
+name: MetaPhlAn2 Taxonomic Sequence Classifier
 
 tooltip: |
-    Perform some kind of method
+    Perform perform taxonomic classification of fastq files
 
 screenshots: []
 
@@ -16,21 +16,28 @@ icon: icon.png
 suggestions:
     apps:
         related:
-            [app1, app2]
-        next:
-            [app3, app4]
+            [kb_kaiju, kb_gottcha]
 
 #
 # Configure the display and description of parameters
 #
 parameters :
-    parameter_1 :
+    input_refs :
         ui-name : |
-            First parameter
+            Read library or ReadsSet
         short-hint : |
-            The first parameter
-        long-hint  : |
-            The first parameter that needs to be entered to drive the method. This might be the first of many.
+            The read library or read library set to examine.
+#    tax_level :
+#        ui-name : |
+#            Tax level for output
+#        short-hint : |
+#            The taxonomic level for the relative abundance output
+#    min_cu_len:
+#        ui-name: |
+#            Min total nucleotide length
+#        short-hint: |
+#            minimum total nucleotide length for the markers in a clade for |
+#            estimating the abundance without considering sub-clade abundances
 
 description : |
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pulvinar efficitur felis, quis tincidunt sem congue at. Vivamus ornare feugiat faucibus. Fusce tincidunt mattis nunc, nec varius purus convallis quis. Nulla facilisi. In at magna dolor. Suspendisse sit amet felis at arcu auctor dapibus vitae pharetra dui. Nam semper mi quis tortor fermentum mollis. Donec a arcu pharetra, rutrum dolor vitae, rutrum mauris. Donec ornare fringilla sagittis. Nam laoreet est in elementum malesuada. Vestibulum id mi eget urna hendrerit feugiat. Donec et ultrices nulla. Phasellus diam eros, dapibus at tempus nec, semper vel ante.</p>

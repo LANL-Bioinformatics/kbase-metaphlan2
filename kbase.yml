@@ -2,7 +2,7 @@ module-name:
     metaphlan2
 
 module-description:
-    A KBase module
+    A KBase module that used MetaPhlAn2 for taxonomic classification for reads
 
 service-language:
     python
@@ -11,5 +11,7 @@ module-version:
     0.0.1
 
 owners:
-    [mcflynn617]
+    [mcflynn617, chienchilo]
 
+data-version:
+    0.1
