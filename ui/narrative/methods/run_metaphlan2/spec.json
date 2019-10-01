@@ -39,10 +39,7 @@
             "advanced": true,
             "allow_multiple": false,
             "default_values": [ "a" ],
-            "field_type": "text",
-            "text_options": {
-                "validate_as": "text"
-            },
+            "field_type": "dropdown",
             "dropdown_options":{
                 "options": [{
                     "value": "a",
