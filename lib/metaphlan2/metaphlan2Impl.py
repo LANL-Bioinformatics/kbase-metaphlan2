@@ -3,6 +3,7 @@
 import logging
 import os
 import subprocess
+import pandas as pd
 
 from installed_clients.KBaseReportClient import KBaseReport
 from installed_clients.ReadsUtilsClient import ReadsUtils
@@ -87,7 +88,9 @@ class metaphlan2:
                 fastq_files_name.append(val['files']['rev_name'])
         logging.info(f"fastq files {fastq_files}")
         fastq_files_string = ' '.join(fastq_files)
-        cmd = ['metaphlan2.py', '--input_type', 'fastq', fastq_files_string]
+        cmd = ['metaphlan2.py', '--bowtie2db', '/data/metaphlan2/',
+               '--mpa_pkl', '/data/metaphlan2/mpa_v20_m200.pkl',
+               '--input_type', 'fastq']
 
         output_dir = os.path.join(self.scratch, 'metaphlan2_output')
 
@@ -96,22 +99,83 @@ class metaphlan2:
 
         cmd.extend(['--min_alignment_len', params['min_alignment_len']]) if params['min_alignment_len'] > 0 else cmd
         cmd.append('--ignore_viruses') if params['ignore_viruses'] == 1 else cmd
+        cmd.append('--ignore_bacteria') if params['ignore_bacteria'] == 1 else cmd
+        cmd.append('--ignore_eukaryotes') if params['ignore_eukaryotes'] == 1 else cmd
+        cmd.append('--ignore_archaea') if params['ignore_archaea'] == 1 else cmd
+        cmd.extend(['--stat_q', str(params['stat_q'])])
 
-        cmd.append('report.txt')
+        cmd.append(fastq_files_string)
+        cmd.append(os.path.join(output_dir, 'report.txt'))
         logging.info(f'cmd {cmd}')
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE,
                              stderr=subprocess.STDOUT)
         logging.info(f'subprocess {p.communicate()}')
 
+        cmd0 = ["ls", output_dir]
+        logging.info(f'cmd {cmd0}')
+        pls = subprocess.Popen(cmd0, stdout=subprocess.PIPE,
+                               stderr=subprocess.STDOUT)
+
+        cmd1 = ["ls", '/kb/module/test/']
+        logging.info(f'cmd {cmd1}')
+        logging.info(f'subprocess {pls.communicate()}')
+
+        pls = subprocess.Popen(cmd1, stdout=subprocess.PIPE,
+                               stderr=subprocess.STDOUT)
+        logging.info(f'subprocess {pls.communicate()}')
+
         logging.info(f"params['input_refs'] {params['input_refs']}")
-        report = KBaseReport(self.callback_url)
-        report_info = report.create({'report': {'objects_created':[],
-                                                'text_message': params['input_refs'][0]},
-                                                'workspace_name': params['workspace_name']})
-        output = {
-            'report_name': report_info['name'],
-            'report_ref': report_info['ref'],
-        }
+        report_df = pd.read_csv(os.path.join(output_dir, 'report.txt'),
+                                sep='\t')
+        report_df['kingdom'] = None
+        report_df['phylum'] = None
+        report_df['class'] = None
+        report_df['order'] = None
+        report_df['family'] = None
+        report_df['genus'] = None
+        report_df['species'] = None
+        report_df['strain'] = None
+
+        tax_dict = {'k': 'kingdom', 'p': 'phylum', 'c': 'class', 'o': 'order',
+                    'f': 'family', 'g': 'genus', 's': 'species', 't': 'strain'}
+        report_df['taxonomy'] = report_df['#SampleID'].apply(
+            lambda x: x.split('|')).apply(lambda x: [y.split('__') for y in x])
+        for idx, row in report_df.iterrows():
+            for col in row['taxonomy']:
+                report_df.loc[idx, tax_dict[col[0]]] = col[1]
+        report_df.drop(['taxonomy', '#SampleID'], axis=1, inplace=True)
+
+        report_html_file = os.path.join(output_dir, 'report.html')
+        report_df.to_html(report_html_file, classes='Metaphlan2_report',
+                          index=False)
+        html_zipped = self.package_folder(output_dir, 'report.html', 'report')
+
+        # Step 5 - Build a Report and return
+        objects_created = []
+        output_files = os.listdir(output_dir)
+        output_files_list = []
+        for output in output_files:
+            if not os.path.isdir(output):
+                output_files_list.append(
+                    {'path': os.path.join(output_dir, output), 'name': output})
+        message = f"MetaPhlAn2 run finished on {fastq_files_string}."
+        report_params = {'message': message,
+                         'workspace_name': params.get('workspace_name'),
+                         'objects_created': objects_created,
+                         'file_links': output_files_list,
+                         'html_links': [html_zipped],
+                         'direct_html_link_index': 0,
+                         'html_window_height': 460}
+        kbase_report_client = KBaseReport(self.callback_url)
+        report_output = kbase_report_client.create_extended_report(
+            report_params)
+        report_output['report_params'] = report_params
+        logging.info(report_output)
+        # Return references which will allow inline display of
+        # the report in the Narrative
+        output = {'report_name': report_output['name'],
+                  'report_ref': report_output['ref'],
+                  'report_params': report_output['report_params']}
         #END run_metaphlan2
 
         # At some point might do deeper type checking...

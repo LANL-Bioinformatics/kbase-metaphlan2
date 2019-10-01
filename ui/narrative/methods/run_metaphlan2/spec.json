@@ -96,7 +96,70 @@
              "field_type" : "checkbox",
              "allow_multiple" : false,
              "optional" : true
-      }
+        },
+        {
+             "id" : "ignore_bacteria",
+             "default_values" : [
+                "0"
+             ],
+             "advanced" : true,
+             "checkbox_options" : {
+                "unchecked_value" : 0,
+                "checked_value" : 1
+             },
+             "text_options" : {
+                "valid_ws_types" : []
+             },
+             "field_type" : "checkbox",
+             "allow_multiple" : false,
+             "optional" : true
+        },
+        {
+             "id" : "ignore_eukaryotes",
+             "default_values" : [
+                "0"
+             ],
+             "advanced" : true,
+             "checkbox_options" : {
+                "unchecked_value" : 0,
+                "checked_value" : 1
+             },
+             "text_options" : {
+                "valid_ws_types" : []
+             },
+             "field_type" : "checkbox",
+             "allow_multiple" : false,
+             "optional" : true
+        },
+        {
+             "id" : "ignore_archaea",
+             "default_values" : [
+                "0"
+             ],
+             "advanced" : true,
+             "checkbox_options" : {
+                "unchecked_value" : 0,
+                "checked_value" : 1
+             },
+             "text_options" : {
+                "valid_ws_types" : []
+             },
+             "field_type" : "checkbox",
+             "allow_multiple" : false,
+             "optional" : true
+        },
+        {
+            "id": "stat_q",
+            "optional": true,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "0.1" ],
+            "field_type": "text",
+            "text_options": {
+                "validate_as": "float",
+                "min_float" : 0
+            }
+        }
     ],
     "behavior": {
         "service-mapping": {
@@ -132,6 +195,22 @@
 				{
 					"input_parameter": "ignore_viruses",
 					"target_property": "ignore_viruses"
+				},
+				{
+					"input_parameter": "ignore_eukaryotes",
+					"target_property": "ignore_eukaryotes"
+				},
+				{
+					"input_parameter": "ignore_bacteria",
+					"target_property": "ignore_bacteria"
+				},
+				{
+					"input_parameter": "ignore_archaea",
+					"target_property": "ignore_archaea"
+				},
+				{
+					"input_parameter": "stat_q",
+					"target_property": "stat_q"
 				}
             ],
             "output_mapping": [

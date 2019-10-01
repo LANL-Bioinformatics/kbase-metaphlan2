@@ -14,7 +14,7 @@ elif [ "${1}" = "test" ] ; then
   echo "Run Tests"
   make test
 elif [ "${1}" = "async" ] ; then
-  sh ./scripts/run_async.sh
+  sh ./scripts/run_async.shdic
 elif [ "${1}" = "init" ] ; then
   echo "Initialize module"
   mkdir -p /data/metaphlan2
@@ -27,6 +27,7 @@ elif [ "${1}" = "init" ] ; then
   else
     wget -c https://bitbucket.org/biobakery/metaphlan2/downloads/mpa_v20_m200_marker_info.txt.bz2
     bzip2 -d mpa_v20_m200_marker_info.txt.bz2
+    chmod ugo+w /data/metaphlan2
   fi
   if [ -s "/data/metaphlan2/mpa_v20_m200_marker_info.txt" ] ; then
     echo "DATA DOWNLOADED SUCCESSFULLY"

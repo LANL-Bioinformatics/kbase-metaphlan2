@@ -49,26 +49,26 @@ parameters :
             Ignore viruses
         short-hint: |
             Do not profile viral organisms
-#    ignore_eukaryotes:
-#        ui-name: |
-#            Ignore eukaryotes
-#        short-hint: |
-#            Do not profile eukaryotic organisms
-#    ignore_bacteria:
-#        ui-name: |
-#            Ignore bacteria
-#        short-hint: |
-#            Do not profile bacterial organisms
-#    ignore_archaea:
-#        ui-name: |
-#            Ignore archaea
-#        short-hint: |
-#            Do not profile archeal organisms
-#    stat_q:
-#        ui-name: |
-#            Robust average value
-#        short-hint: |
-#            Quantile value for the robust average
+    ignore_eukaryotes:
+        ui-name: |
+            Ignore eukaryotes
+        short-hint: |
+            Do not profile eukaryotic organisms
+    ignore_bacteria:
+        ui-name: |
+            Ignore bacteria
+        short-hint: |
+            Do not profile bacterial organisms
+    ignore_archaea:
+        ui-name: |
+            Ignore archaea
+        short-hint: |
+            Do not profile archeal organisms
+    stat_q:
+        ui-name: |
+            Robust average value
+        short-hint: |
+            Quantile value for the robust average
 
 description : |
     <p>This is a KBase wrapper for MetaPhlAn, a computational tool for profiling the composition of microbial communities (Bacteria, Archaea, Eukaryotes and Viruses) from metagenomic shotgun sequencing data (i.e. not 16S) with species-level. With the newly added StrainPhlAn module, it is now possible to perform accurate strain-level microbial profiling.</p>

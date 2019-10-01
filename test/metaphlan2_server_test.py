@@ -55,7 +55,7 @@ class metaphlan2Test(unittest.TestCase):
             print('Test workspace was deleted')
 
     # NOTE: According to Python unittest naming rules test method names should start from 'test'. # noqa
-    def test_param(self):
+    def test_params(self):
         # Prepare test objects in workspace if needed using
         # self.getWsClient().save_objects({'workspace': self.getWsName(),
         #                                  'objects': []})
@@ -70,19 +70,30 @@ class metaphlan2Test(unittest.TestCase):
                                                          'input_refs': input_refs,
                                                          'tax_level': 'k',
                                                          'min_cu_len': 1000,
-                                                         'min_alignment_len': 0
+                                                         'min_alignment_len': 0,
+                                                         'ignore_viruses': 0,
+                                                         'ignore_bacteria': 0,
+                                                         'ignore_eukaryotes': 0,
+                                                         'ignore_archaea': 0,
+                                                         'stat_q': 0.1
                                                          })
         print(f'ret {ret[0]}')
+        self.assertIn('MetaPhlAn2 run finished', ret[0]['report_params']['message'])
 
     def test_metaphlan2(self):
-        cmd = ['metaphlan2.py', '--input_type', 'fastq', '/data/metaphlan2/test.fastq', 'metaphlan2_report.txt']
+        output_dir = os.path.join(self.scratch, 'metaphlan2_output')
+        cmd = ['metaphlan2.py', '--bowtie2db', '/data/metaphlan2/',
+               '--mpa_pkl', '/data/metaphlan2/mpa_v20_m200.pkl',
+               '--input_type', 'fastq', '--min_cu_len', '1000',
+               '--min_alignment_len', '0', '/data/metaphlan2/test.fastq',
+               os.path.join(self.scratch, 'metaphlan2_report.txt')]
         logging.info(f'cmd {cmd}')
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE,
                              stderr=subprocess.STDOUT)
         logging.info(p.communicate())
 
-        self.assertTrue(os.path.exists('metaphlan2_report.txt'))
-        with open('metaphlan2_report.txt', 'r') as fp:
+        self.assertTrue(os.path.exists(os.path.join(self.scratch, 'metaphlan2_report.txt')))
+        with open(os.path.join(self.scratch, 'metaphlan2_report.txt'), 'r') as fp:
             logging.info('print summary')
             lines = fp.readlines()
             for line in lines:
