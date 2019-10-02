@@ -29,6 +29,16 @@ elif [ "${1}" = "init" ] ; then
     bzip2 -d mpa_v20_m200_marker_info.txt.bz2
     chmod ugo+w /data/metaphlan2
   fi
+
+  echo "downloading https://bitbucket.org/biobakery/metaphlan2/downloads/mpa_v20_m200.tar"
+  if [ -s "/data/metaphlan2/mpa_v20_m200.1.bt2" ];
+  then
+    echo "mpa_v20_m200.1.bt2 exists"
+  else
+    wget -c https://bitbucket.org/biobakery/metaphlan2/downloads/mpa_v20_m200.tar
+    tar -xzvf mpa_v20_m200.tar
+  fi
+
   if [ -s "/data/metaphlan2/mpa_v20_m200_marker_info.txt" ] ; then
     echo "DATA DOWNLOADED SUCCESSFULLY"
     touch /data/__READY__
