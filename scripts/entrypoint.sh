@@ -14,7 +14,7 @@ elif [ "${1}" = "test" ] ; then
   echo "Run Tests"
   make test
 elif [ "${1}" = "async" ] ; then
-  sh ./scripts/run_async.shdic
+  sh ./scripts/run_async.sh
 elif [ "${1}" = "init" ] ; then
   echo "Initialize module"
   mkdir -p /data/metaphlan2
