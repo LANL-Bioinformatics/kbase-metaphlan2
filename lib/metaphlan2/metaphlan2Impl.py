@@ -88,6 +88,7 @@ class metaphlan2:
                 fastq_files.append(val['files']['rev'])
                 fastq_files_name.append(val['files']['rev_name'])
         logging.info(f"fastq files {fastq_files}")
+        logging.info(f"Input parameters {params.items()}")
         fastq_files_string = ' '.join(fastq_files)
 
         # Start with base cmd and add parameters based on user input

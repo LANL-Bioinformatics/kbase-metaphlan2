@@ -22,7 +22,7 @@ suggestions:
 # Configure the display and description of parameters
 #
 parameters :
-    input_refs :
+    input_ref :
         ui-name : |
             Read library or ReadsSet
         short-hint : |

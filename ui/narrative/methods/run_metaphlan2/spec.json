@@ -11,7 +11,7 @@
     },
     "parameters": [ 
         {
-            "id": "input_refs",
+            "id": "input_ref",
             "optional": false,
             "advanced": false,
             "allow_multiple": true,
@@ -176,8 +176,8 @@
                     "target_property": "workspace_id"
                 },
                 {
-                    "input_parameter": "input_refs",
-                    "target_property": "input_refs",
+                    "input_parameter": "input_ref",
+                    "target_property": "input_ref",
 					"target_type_transform": "list<resolved-ref>"
                 },
 				{
