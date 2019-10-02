@@ -7,6 +7,7 @@ import pandas as pd
 
 from installed_clients.KBaseReportClient import KBaseReport
 from installed_clients.ReadsUtilsClient import ReadsUtils
+from installed_clients.AssemblyUtilClient import AssemblyUtil
 from installed_clients.DataFileUtilClient import DataFileUtil
 #END_HEADER
 
@@ -71,45 +72,81 @@ class metaphlan2:
         # ctx is the context object
         # return variables are: output
         #BEGIN run_metaphlan2
-        logging.info('Downloading Reads data as a Fastq file.')
-        logging.info(f"Input parameters {params.items()}")
-        readsUtil = ReadsUtils(self.callback_url)
-        download_reads_output = readsUtil.download_reads(
-            {'read_libraries': params['input_ref']})
-        print(
-            f"Input refs {params['input_ref']} download_reads_output {download_reads_output}")
-        fastq_files = []
-        fastq_files_name = []
-        for key, val in download_reads_output['files'].items():
-            if 'fwd' in val['files'] and val['files']['fwd']:
-                fastq_files.append(val['files']['fwd'])
-                fastq_files_name.append(val['files']['fwd_name'])
-            if 'rev' in val['files'] and val['files']['rev']:
-                fastq_files.append(val['files']['rev'])
-                fastq_files_name.append(val['files']['rev_name'])
-        logging.info(f"fastq files {fastq_files}")
-        logging.info(f"Input parameters {params.items()}")
-        fastq_files_string = ' '.join(fastq_files)
 
-        # Start with base cmd and add parameters based on user input
+        # Check parameters
+        if 'input_genomes' not in params and 'input_ref' not in params:
+            raise ValueError(
+                'You must enter either an input genome or input reads')
+        if 'input_genomes' in params and 'input_ref' in params:
+            raise ValueError(
+                'You must enter either an input genome or input reads, '
+                'but not both')
+        if 'input_genomes' in params and (
+                not isinstance(params['input_genomes'], str) or not len(
+                params['input_genomes'])):
+            raise ValueError('Pass in a valid input genome string')
+
+        if 'input_ref' in params and (
+                not isinstance(params['input_ref'], list) or not len(
+                params['input_ref'])):
+            raise ValueError('Pass in a list of input references')
+            # Start with base cmd and add parameters based on user input
+
         cmd = ['metaphlan2.py', '--bowtie2db', '/data/metaphlan2/',
-               '--mpa_pkl', '/data/metaphlan2/mpa_v20_m200.pkl',
-               '--input_type', 'fastq']
+               '--mpa_pkl', '/data/metaphlan2/mpa_v20_m200.pkl']
+
+        if 'input_genomes' in params:
+            assembly_util = AssemblyUtil(self.callback_url)
+            fasta_file_obj = assembly_util.get_assembly_as_fasta(
+                {'ref': params['input_genomes']})
+            logging.info(fasta_file_obj)
+            fasta_file = fasta_file_obj['path']
+
+            cmd.extend(['--input_type', 'fasta', fasta_file])
+
+        if 'input_ref' in params:
+            logging.info('Downloading Reads data as a Fastq file.')
+            logging.info(f"Input parameters {params.items()}")
+            readsUtil = ReadsUtils(self.callback_url)
+            download_reads_output = readsUtil.download_reads(
+                {'read_libraries': params['input_ref']})
+            print(
+                f"Input refs {params['input_ref']} download_reads_output {download_reads_output}")
+            fastq_files = []
+            fastq_files_name = []
+            for key, val in download_reads_output['files'].items():
+                if 'fwd' in val['files'] and val['files']['fwd']:
+                    fastq_files.append(val['files']['fwd'])
+                    fastq_files_name.append(val['files']['fwd_name'])
+                if 'rev' in val['files'] and val['files']['rev']:
+                    fastq_files.append(val['files']['rev'])
+                    fastq_files_name.append(val['files']['rev_name'])
+            logging.info(f"fastq files {fastq_files}")
+            fastq_files_string = ' '.join(fastq_files)
+            cmd.extend(['--input_type', 'fastq', fastq_files_string])
 
         output_dir = os.path.join(self.scratch, 'metaphlan2_output')
 
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
 
-        cmd.extend(['--min_alignment_len', params['min_alignment_len']]) if 'min_alignment_len' in params.keys() and params['min_alignment_len'] > 0 else cmd
-        cmd.append('--ignore_viruses') if params['ignore_viruses'] == 1 else cmd
-        cmd.append('--ignore_bacteria') if params['ignore_bacteria'] == 1 else cmd
-        cmd.append('--ignore_eukaryotes') if params['ignore_eukaryotes'] == 1 else cmd
-        cmd.append('--ignore_archaea') if params['ignore_archaea'] == 1 else cmd
-        cmd.extend(['--stat_q', str(params['stat_q'])])
+        # insert into second to last position, before input file(s)
+        cmd.insert(-1, '--min_alignment_len') if params['min_alignment_len'] > 0 else cmd
+        cmd.insert(-1, str(params['min_alignment_len'])) if params[
+                                                           'min_alignment_len'] > 0 else cmd
+        cmd.insert(-1, '--ignore_viruses') if params['ignore_viruses'] == 1 else cmd
+        cmd.insert(-1, '--ignore_bacteria') if params['ignore_bacteria'] == 1 else cmd
+        cmd.insert(-1, '--ignore_eukaryotes') if params['ignore_eukaryotes'] == 1 else cmd
+        cmd.insert(-1, '--ignore_archaea') if params['ignore_archaea'] == 1 else cmd
+        cmd.insert(-1, '--stat_q')
+        cmd.insert(-1, str(params['stat_q']))
+        cmd.insert(-1, '--min_cu_len')
+        cmd.insert(-1, str(params['min_cu_len']))
 
-        cmd.append(fastq_files_string)
+        # append output file
         cmd.append(os.path.join(output_dir, 'report.txt'))
+
+        # run pipeline
         logging.info(f'cmd {cmd}')
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE,
                              stderr=subprocess.STDOUT)
@@ -127,6 +164,7 @@ class metaphlan2:
                                stderr=subprocess.STDOUT)
         logging.info(f'subprocess {pls.communicate()}')
 
+        # get output file and convert to format for report
         logging.info(f"params['input_ref'] {params['input_ref']}")
         report_df = pd.read_csv(os.path.join(output_dir, 'report.txt'),
                                 sep='\t')
@@ -161,7 +199,7 @@ class metaphlan2:
             if not os.path.isdir(output):
                 output_files_list.append(
                     {'path': os.path.join(output_dir, output), 'name': output})
-        message = f"MetaPhlAn2 run finished on {fastq_files_string}."
+        message = f"MetaPhlAn2 run finished."
         report_params = {'message': message,
                          'workspace_name': params.get('workspace_name'),
                          'objects_created': objects_created,

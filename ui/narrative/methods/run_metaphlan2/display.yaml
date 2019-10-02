@@ -27,6 +27,11 @@ parameters :
             Read library or ReadsSet
         short-hint : |
             The read library or read library set to examine.
+    input_genomes:
+        ui-name: |
+            Assembly
+        short-hint: |
+            The assembly library set to examine
     tax_lev :
         ui-name : |
             Tax level for output
@@ -73,7 +78,7 @@ parameters :
 description : |
     <p>This is a KBase wrapper for MetaPhlAn, a computational tool for profiling the composition of microbial communities (Bacteria, Archaea, Eukaryotes and Viruses) from metagenomic shotgun sequencing data (i.e. not 16S) with species-level. With the newly added StrainPhlAn module, it is now possible to perform accurate strain-level microbial profiling.</p>
 
-        <p>MetaPhlAn 2 relies on ~1M unique clade-specific marker genes (the marker information file mpa_v20_m200_marker_info.txt.bz2 can be found in the Download page here) identified from ~17,000 reference genomes (~13,500 bacterial and archaeal, ~3,500 viral, and ~110 eukaryotic), allowing:
+        <p>MetaPhlAn 2 relies on ~1M unique clade-specific marker genes identified from ~17,000 reference genomes (~13,500 bacterial and archaeal, ~3,500 viral, and ~110 eukaryotic), allowing:
           <ul>
             <li>unambiguous taxonomic assignments;</li>
             <li>accurate estimation of organismal relative abundance;</li>
