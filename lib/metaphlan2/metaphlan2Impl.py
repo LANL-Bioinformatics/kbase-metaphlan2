@@ -72,11 +72,12 @@ class metaphlan2:
         # return variables are: output
         #BEGIN run_metaphlan2
         logging.info('Downloading Reads data as a Fastq file.')
+        logging.info(f"Input parameters {params.items()}")
         readsUtil = ReadsUtils(self.callback_url)
         download_reads_output = readsUtil.download_reads(
             {'read_libraries': params['input_refs']})
         print(
-            f"Input parameters {params['input_refs']} download_reads_output {download_reads_output}")
+            f"Input refs {params['input_refs']} download_reads_output {download_reads_output}")
         fastq_files = []
         fastq_files_name = []
         for key, val in download_reads_output['files'].items():
@@ -88,6 +89,8 @@ class metaphlan2:
                 fastq_files_name.append(val['files']['rev_name'])
         logging.info(f"fastq files {fastq_files}")
         fastq_files_string = ' '.join(fastq_files)
+
+        # Start with base cmd and add parameters based on user input
         cmd = ['metaphlan2.py', '--bowtie2db', '/data/metaphlan2/',
                '--mpa_pkl', '/data/metaphlan2/mpa_v20_m200.pkl',
                '--input_type', 'fastq']
@@ -97,7 +100,7 @@ class metaphlan2:
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
 
-        cmd.extend(['--min_alignment_len', params['min_alignment_len']]) if params['min_alignment_len'] > 0 else cmd
+        cmd.extend(['--min_alignment_len', params['min_alignment_len']]) if 'min_alignment_len' in params.keys() and params['min_alignment_len'] > 0 else cmd
         cmd.append('--ignore_viruses') if params['ignore_viruses'] == 1 else cmd
         cmd.append('--ignore_bacteria') if params['ignore_bacteria'] == 1 else cmd
         cmd.append('--ignore_eukaryotes') if params['ignore_eukaryotes'] == 1 else cmd
