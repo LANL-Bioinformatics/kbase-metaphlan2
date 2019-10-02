@@ -75,9 +75,9 @@ class metaphlan2:
         logging.info(f"Input parameters {params.items()}")
         readsUtil = ReadsUtils(self.callback_url)
         download_reads_output = readsUtil.download_reads(
-            {'read_libraries': params['input_refs']})
+            {'read_libraries': params['input_ref']})
         print(
-            f"Input refs {params['input_refs']} download_reads_output {download_reads_output}")
+            f"Input refs {params['input_ref']} download_reads_output {download_reads_output}")
         fastq_files = []
         fastq_files_name = []
         for key, val in download_reads_output['files'].items():
@@ -128,7 +128,7 @@ class metaphlan2:
                                stderr=subprocess.STDOUT)
         logging.info(f'subprocess {pls.communicate()}')
 
-        logging.info(f"params['input_refs'] {params['input_refs']}")
+        logging.info(f"params['input_ref'] {params['input_ref']}")
         report_df = pd.read_csv(os.path.join(output_dir, 'report.txt'),
                                 sep='\t')
         report_df['kingdom'] = None
