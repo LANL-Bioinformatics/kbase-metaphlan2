@@ -119,11 +119,10 @@ class metaphlan2:
         logging.info(f'cmd {cmd0}')
         pls = subprocess.Popen(cmd0, stdout=subprocess.PIPE,
                                stderr=subprocess.STDOUT)
-
-        cmd1 = ["ls", '/kb/module/test/']
-        logging.info(f'cmd {cmd1}')
         logging.info(f'subprocess {pls.communicate()}')
 
+        cmd1 = ["ls", '/data/metaphlan2/']
+        logging.info(f'cmd {cmd1}')
         pls = subprocess.Popen(cmd1, stdout=subprocess.PIPE,
                                stderr=subprocess.STDOUT)
         logging.info(f'subprocess {pls.communicate()}')

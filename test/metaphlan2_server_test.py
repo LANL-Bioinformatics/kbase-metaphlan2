@@ -67,7 +67,7 @@ class metaphlan2Test(unittest.TestCase):
         # self.assertEqual(ret[...], ...) or other unittest methods
         input_refs = ['22956/3/1']
         ret = self.serviceImpl.run_metaphlan2(self.ctx, {'workspace_name': self.wsName,
-                                                         'input_refs': input_refs,
+                                                         'input_ref': input_refs,
                                                          'tax_level': 'k',
                                                          'min_cu_len': 1000,
                                                          'min_alignment_len': 0,
@@ -80,21 +80,28 @@ class metaphlan2Test(unittest.TestCase):
         print(f'ret {ret[0]}')
         self.assertIn('MetaPhlAn2 run finished', ret[0]['report_params']['message'])
 
-    def DO_NOT_test_metaphlan2(self):
-        output_dir = os.path.join(self.scratch, 'metaphlan2_output')
+    def test_metaphlan2(self):
+        cmd0 = ['rm', '/kb/module/work/test_data/test.fastq.bowtie2out.txt']
+        logging.info(f'cmd {cmd0}')
+        p = subprocess.Popen(cmd0, stdout=subprocess.PIPE,
+                             stderr=subprocess.STDOUT)
+        logging.info(p.communicate())
+
         cmd = ['metaphlan2.py', '--bowtie2db', '/data/metaphlan2/',
                '--mpa_pkl', '/data/metaphlan2/mpa_v20_m200.pkl',
                '--input_type', 'fastq', '--min_cu_len', '1000',
-               '--min_alignment_len', '0', '/data/metaphlan2/test.fastq',
-               os.path.join(output_dir, 'metaphlan2_report.txt')]
+               '--min_alignment_len', '0', '/kb/module/work/test_data/test.fastq',
+               '/kb/module/work/test_data/metaphlan2_report.txt']
         logging.info(f'cmd {cmd}')
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE,
                              stderr=subprocess.STDOUT)
         logging.info(p.communicate())
 
-        self.assertTrue(os.path.exists(os.path.join(output_dir, 'metaphlan2_report.txt')))
-        with open(os.path.join(self.scratch, 'metaphlan2_report.txt'), 'r') as fp:
+        self.assertTrue(os.path.exists('/kb/module/work/test_data/metaphlan2_report.txt'))
+        with open('/kb/module/work/test_data/metaphlan2_report.txt', 'r') as fp:
             logging.info('print summary')
             lines = fp.readlines()
             for line in lines:
                 logging.info(line.split('\t')[-1].strip())
+            self.assertEqual(lines[-1].split()[0],
+                             'k__Viruses|p__Viruses_noname|c__Viruses_noname|o__Mononegavirales|f__Filoviridae|g__Ebolavirus|s__Zaire_ebolavirus|t__PRJNA14703')
