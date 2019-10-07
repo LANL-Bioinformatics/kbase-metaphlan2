@@ -36,7 +36,7 @@ elif [ "${1}" = "init" ] ; then
     echo "mpa_v20_m200.1.bt2 exists"
   else
     wget -c https://bitbucket.org/biobakery/metaphlan2/downloads/mpa_v20_m200.tar
-    tar -xzvf mpa_v20_m200.tar
+    tar -xvf mpa_v20_m200.tar
   fi
 
   if [ -s "/data/metaphlan2/mpa_v20_m200_marker_info.txt" ] ; then
