@@ -74,19 +74,31 @@ class metaphlan2:
         #BEGIN run_metaphlan2
 
         # Check parameters
-        if 'input_genomes' not in params and 'input_ref' not in params:
+        logging.info(f'params {params}')
+        # Check for presence of input file types in params
+        input_genomes = 'input_genomes' in params and len(
+            params['input_genomes']) > 0 and None not in params[
+                            'input_genomes']
+        input_refs = 'input_ref' in params and len(
+            params['input_ref']) > 0 and None not in params['input_ref']
+
+        # for name in ['workspace_name', 'db_type']:
+        #     if name not in params:
+        #         raise ValueError(
+        #             'Parameter "' + name + '" is required but missing')
+        if not input_genomes and not input_refs:
             raise ValueError(
                 'You must enter either an input genome or input reads')
-        if 'input_genomes' in params and 'input_ref' in params:
+
+        if input_refs and input_genomes:
             raise ValueError(
                 'You must enter either an input genome or input reads, '
                 'but not both')
-        if 'input_genomes' in params and (
-                not isinstance(params['input_genomes'], str) or not len(
-                params['input_genomes'])):
+
+        if input_genomes and (not isinstance(params['input_genomes'][0], str)):
             raise ValueError('Pass in a valid input genome string')
 
-        if 'input_ref' in params and (
+        if input_refs and (
                 not isinstance(params['input_ref'], list) or not len(
                 params['input_ref'])):
             raise ValueError('Pass in a list of input references')
@@ -95,7 +107,7 @@ class metaphlan2:
         cmd = ['metaphlan2.py', '--bowtie2db', '/data/metaphlan2/',
                '--mpa_pkl', '/data/metaphlan2/mpa_v20_m200.pkl']
 
-        if 'input_genomes' in params:
+        if input_genomes:
             assembly_util = AssemblyUtil(self.callback_url)
             fasta_file_obj = assembly_util.get_assembly_as_fasta(
                 {'ref': params['input_genomes']})
@@ -104,7 +116,7 @@ class metaphlan2:
 
             cmd.extend(['--input_type', 'fasta', fasta_file])
 
-        if 'input_ref' in params:
+        if input_refs:
             logging.info('Downloading Reads data as a Fastq file.')
             logging.info(f"Input parameters {params.items()}")
             readsUtil = ReadsUtils(self.callback_url)
