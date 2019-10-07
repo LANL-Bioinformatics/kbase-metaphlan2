@@ -110,7 +110,7 @@ class metaphlan2:
         if input_genomes:
             assembly_util = AssemblyUtil(self.callback_url)
             fasta_file_obj = assembly_util.get_assembly_as_fasta(
-                {'ref': params['input_genomes']})
+                {'ref': params['input_genomes'][0]})
             logging.info(fasta_file_obj)
             fasta_file = fasta_file_obj['path']
 
@@ -157,6 +157,11 @@ class metaphlan2:
 
         # append output file
         cmd.append(os.path.join(output_dir, 'report.txt'))
+        cmd00 = ["ls", '/data/metaphlan2/']
+        logging.info(f'cmd {cmd00}')
+        pls = subprocess.Popen(cmd00, stdout=subprocess.PIPE,
+                               stderr=subprocess.STDOUT)
+        logging.info(f'subprocess {pls.communicate()}')
 
         # run pipeline
         logging.info(f'cmd {cmd}')
@@ -177,7 +182,7 @@ class metaphlan2:
         logging.info(f'subprocess {pls.communicate()}')
 
         # get output file and convert to format for report
-        logging.info(f"params['input_ref'] {params['input_ref']}")
+        # logging.info(f"params['input_ref'] {params['input_ref']}")
         report_df = pd.read_csv(os.path.join(output_dir, 'report.txt'),
                                 sep='\t')
         report_df['kingdom'] = None

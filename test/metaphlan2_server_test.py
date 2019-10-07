@@ -66,6 +66,7 @@ class metaphlan2Test(unittest.TestCase):
         # Check returned data with
         # self.assertEqual(ret[...], ...) or other unittest methods
         input_refs = ['22956/3/1']
+        input_genomes = ["79/16/1"]
         ret = self.serviceImpl.run_metaphlan2(self.ctx, {'workspace_name': self.wsName,
                                                          'input_ref': input_refs,
                                                          'tax_level': 'k',
@@ -80,6 +81,20 @@ class metaphlan2Test(unittest.TestCase):
         print(f'ret {ret[0]}')
         self.assertIn('MetaPhlAn2 run finished', ret[0]['report_params']['message'])
 
+        input_refs = ['22956/3/1']
+        ret = self.serviceImpl.run_metaphlan2(self.ctx,
+                                              {'workspace_name': self.wsName,
+                                               'input_genomes': input_genomes,
+                                               'tax_level': 'k',
+                                               'min_cu_len': 1000,
+                                               'min_alignment_len': 0,
+                                               'ignore_viruses': 0,
+                                               'ignore_bacteria': 0,
+                                               'ignore_eukaryotes': 0,
+                                               'ignore_archaea': 0, 'stat_q': 0.1})
+        print(f'ret {ret[0]}')
+        self.assertIn('MetaPhlAn2 run finished',
+                      ret[0]['report_params']['message'])
     def test_metaphlan2(self):
         cmd0 = ['rm', '/kb/module/work/test_data/test.fastq.bowtie2out.txt']
         logging.info(f'cmd {cmd0}')
