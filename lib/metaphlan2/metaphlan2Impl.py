@@ -185,22 +185,25 @@ class metaphlan2:
         # logging.info(f"params['input_ref'] {params['input_ref']}")
         report_df = pd.read_csv(os.path.join(output_dir, 'report.txt'),
                                 sep='\t')
-        report_df['kingdom'] = None
-        report_df['phylum'] = None
-        report_df['class'] = None
-        report_df['order'] = None
-        report_df['family'] = None
-        report_df['genus'] = None
-        report_df['species'] = None
-        report_df['strain'] = None
+        taxa_list = ['kingdom', 'phylum', 'class', 'order', 'family', 'genus',
+                    'species', 'strain', 'unclassified']
+        abbrev_list = ['k', 'p', 'c', 'o', 'f', 'g', 's', 't', 'unclassified']
 
-        tax_dict = {'k': 'kingdom', 'p': 'phylum', 'c': 'class', 'o': 'order',
-                    'f': 'family', 'g': 'genus', 's': 'species', 't': 'strain'}
+        for taxa in taxa_list:
+            report_df[taxa] = None
+        tax_dict = dict(zip(abbrev_list, taxa_list))
+
+        # split dunderscores to get tax level and name
         report_df['taxonomy'] = report_df['#SampleID'].apply(
             lambda x: x.split('|')).apply(lambda x: [y.split('__') for y in x])
+
         for idx, row in report_df.iterrows():
             for col in row['taxonomy']:
-                report_df.loc[idx, tax_dict[col[0]]] = col[1]
+                try:
+                    report_df.loc[idx, tax_dict[col[0]]] = col[1]
+                except IndexError:
+                    report_df.loc[idx, tax_dict[col[0]]] = col[0]
+
         report_df.drop(['taxonomy', '#SampleID'], axis=1, inplace=True)
 
         report_html_file = os.path.join(output_dir, 'report.html')
