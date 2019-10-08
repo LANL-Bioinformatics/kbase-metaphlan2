@@ -29,6 +29,7 @@ elif [ "${1}" = "init" ] ; then
     wget -q https://edge-dl.lanl.gov/EDGE/dev/edge_dev_metaphlan2DB.tgz
     tar -xvf edge_dev_metaphlan2DB.tgz
     cp -r database/metaphlan2/ /data/metaphlan2/
+    ls /data/metaphlan2/
     rm -r database/
   fi
 
