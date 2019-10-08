@@ -26,7 +26,7 @@ elif [ "${1}" = "init" ] ; then
   then
     echo "mpa_v20_m200.1.pkl exists"
   else
-    wget -c https://edge-dl.lanl.gov/EDGE/dev/edge_dev_metaphlan2DB.tgz
+    wget -q https://edge-dl.lanl.gov/EDGE/dev/edge_dev_metaphlan2DB.tgz
     tar -xvf edge_dev_metaphlan2DB.tgz
     mv database/metaphlan2 /data/
     rm -r database/
