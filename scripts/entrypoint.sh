@@ -20,26 +20,19 @@ elif [ "${1}" = "init" ] ; then
   mkdir -p /data/metaphlan2
   cd /data/metaphlan2
 
-  echo "downloading https://bitbucket.org/biobakery/metaphlan2/downloads/mpa_v20_m200_marker_info.txt.bz2"
-  if [ -s "/data/metaphlan2/mpa_v20_m200_marker_info.txt" ];
+  echo "downloading https://edge-dl.lanl.gov/EDGE/dev/edge_dev_metaphlan2DB.tgz"
+
+  if [ -s "/data/metaphlan2/mpa_v20_m200.pkl" ];
   then
-    echo "mpa_v20_m200_marker_info exists"
+    echo "mpa_v20_m200.1.pkl exists"
   else
-    wget -c https://bitbucket.org/biobakery/metaphlan2/downloads/mpa_v20_m200_marker_info.txt.bz2
-    bzip2 -d mpa_v20_m200_marker_info.txt.bz2
-    chmod ugo+w /data/metaphlan2
+    wget -c https://edge-dl.lanl.gov/EDGE/dev/edge_dev_metaphlan2DB.tgz
+    tar -xvf edge_dev_metaphlan2DB.tgz
+    mv database/metaphlan2 /data/
+    rm -r database/
   fi
 
-  echo "downloading https://bitbucket.org/biobakery/metaphlan2/downloads/mpa_v20_m200.tar"
-  if [ -s "/data/metaphlan2/mpa_v20_m200.1.bt2" ];
-  then
-    echo "mpa_v20_m200.1.bt2 exists"
-  else
-    wget -c https://bitbucket.org/biobakery/metaphlan2/downloads/mpa_v20_m200.tar
-    tar -xvf mpa_v20_m200.tar
-  fi
-
-  if [ -s "/data/metaphlan2/mpa_v20_m200_marker_info.txt" ] ; then
+  if [ -s "/data/metaphlan2/mpa_v20_m200_marker_info.txt" -a -s "/data/metaphlan2/mpa_v20_m200.pkl" -a -s "/data/metaphlan2/mpa_v20_m200.1.bt2" ] ; then
     echo "DATA DOWNLOADED SUCCESSFULLY"
     touch /data/__READY__
   else
