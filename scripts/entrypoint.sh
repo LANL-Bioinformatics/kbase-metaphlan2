@@ -18,8 +18,7 @@ elif [ "${1}" = "async" ] ; then
 elif [ "${1}" = "init" ] ; then
   echo "Initialize module"
   mkdir -p /data/metaphlan2
-  cd /data/metaphlan2
-
+  cd /data
   echo "downloading https://edge-dl.lanl.gov/EDGE/dev/edge_dev_metaphlan2DB.tgz"
 
   if [ -s "/data/metaphlan2/mpa_v20_m200.pkl" ];
@@ -28,9 +27,15 @@ elif [ "${1}" = "init" ] ; then
   else
     wget -q https://edge-dl.lanl.gov/EDGE/dev/edge_dev_metaphlan2DB.tgz
     tar -xvf edge_dev_metaphlan2DB.tgz
-    cp -r database/metaphlan2/ /data/metaphlan2/
-    ls /data/metaphlan2/
+    echo "copying to /data"
+    cp -r database/metaphlan2/ /data/
+
+    chmod -R 777 /data/
+    echo "ls /data/metaphlan2"
+    ls -la /data/metaphlan2/
+    echo "removing database/ and edge_dev_metaphlan2DB.tgz"
     rm -r database/
+    rm edge_dev_metaphlan2DB.tgz
   fi
 
   if [ -s "/data/metaphlan2/mpa_v20_m200_marker_info.txt" -a -s "/data/metaphlan2/mpa_v20_m200.pkl" -a -s "/data/metaphlan2/mpa_v20_m200.1.bt2" ] ; then

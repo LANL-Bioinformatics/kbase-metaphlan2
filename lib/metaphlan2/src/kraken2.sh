@@ -54,7 +54,7 @@ set -x;
 
 REPORT=$OUTPATH/$PREFIX.report.csv
 echo "$DB, $REPORT, $THREADS, $FASTQ"
-metaphlan2.py --db $REFDB --report $REPORT --threads $THREADS $FASTQ
+kraken2 --db $REFDB --report $REPORT --threads $THREADS $FASTQ
 
 #generate out.list
 convert_krakenRep2list.pl < $REPORT > $OUTPATH/$PREFIX.out.list

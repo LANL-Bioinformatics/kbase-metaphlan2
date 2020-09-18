@@ -82,31 +82,36 @@ class metaphlan2Test(unittest.TestCase):
         self.assertIn('MetaPhlAn2 run finished', ret[0]['report_params']['message'])
 
         input_refs = ['22956/3/1']
-        ret = self.serviceImpl.run_metaphlan2(self.ctx,
-                                              {'workspace_name': self.wsName,
-                                               'input_genomes': input_genomes,
-                                               'tax_level': 'k',
-                                               'min_cu_len': 1000,
-                                               'min_alignment_len': 0,
-                                               'ignore_viruses': 0,
-                                               'ignore_bacteria': 0,
-                                               'ignore_eukaryotes': 0,
-                                               'ignore_archaea': 0, 'stat_q': 0.1})
-        print(f'ret {ret[0]}')
-        self.assertIn('MetaPhlAn2 run finished',
-                      ret[0]['report_params']['message'])
+        # ret = self.serviceImpl.run_metaphlan2(self.ctx,
+        #                                       {'workspace_name': self.wsName,
+        #                                        'input_genomes': input_genomes,
+        #                                        'tax_level': 'k',
+        #                                        'min_cu_len': 1000,
+        #                                        'min_alignment_len': 0,
+        #                                        'ignore_viruses': 0,
+        #                                        'ignore_bacteria': 0,
+        #                                        'ignore_eukaryotes': 0,
+        #                                        'ignore_archaea': 0, 'stat_q': 0.1})
+        # print(f'ret {ret[0]}')
+        # self.assertIn('MetaPhlAn2 run finished',
+        #               ret[0]['report_params']['message'])
     def test_metaphlan2(self):
-        cmd0 = ['rm', '/kb/module/work/test_data/test.fastq.bowtie2out.txt']
+
+        self.assertTrue(os.path.exists(
+            '/data/metaphlan2/mpa_v20_m200.1.bt2'))
+        self.assertTrue(os.path.exists(
+            '/data/metaphlan2/mpa_v20_m200.pkl'))
+        logging.info(os.listdir('/data/metaphlan2/'))
+        cmd0 = ['rm', '/kb/module/work/test_data/metaphlan2_report.txt']
         logging.info(f'cmd {cmd0}')
         p = subprocess.Popen(cmd0, stdout=subprocess.PIPE,
                              stderr=subprocess.STDOUT)
         logging.info(p.communicate())
 
         cmd = ['metaphlan2.py', '--bowtie2db', '/data/metaphlan2/',
-               '--mpa_pkl', '/data/metaphlan2/mpa_v20_m200.pkl',
-               '--input_type', 'fastq', '--min_cu_len', '1000',
-               '--min_alignment_len', '0', '/kb/module/work/test_data/test.fastq',
-               '/kb/module/work/test_data/metaphlan2_report.txt']
+               '--input_type', 'fastq',
+               '--bowtie2out','/kb/module/work/test_data/metaphlan2_report.txt',
+               '/kb/module/work/test_data/test.fastq']
         logging.info(f'cmd {cmd}')
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE,
                              stderr=subprocess.STDOUT)

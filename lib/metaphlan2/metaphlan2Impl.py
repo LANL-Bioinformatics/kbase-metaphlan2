@@ -32,6 +32,37 @@ class metaphlan2:
     GIT_COMMIT_HASH = "b57f631656b3413a298682cc9bd6f71a80529f19"
 
     #BEGIN_CLASS_HEADER
+    def _generate_DataTable(self, infile, outfile):
+        f =  open(infile, "r")
+        wf = open(outfile,"w")
+
+        header = f.readline().strip()
+        headerlist = [ x.strip() for x in header.split('\t')]
+
+        wf.write("<head>\n")
+        wf.write("<link rel='stylesheet' type='text/css' href='https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css'>\n")
+        wf.write("<script type='text/javascript' charset='utf8' src='https://code.jquery.com/jquery-3.3.1.js'></script>\n")
+        wf.write("<script type='text/javascript' charset='utf8' src='https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js'></script>\n")
+        wf.write("</head>\n")
+        wf.write("<body>\n")
+        wf.write("""<script>
+        $(document).ready(function() {
+            $('#gottcha2_result_table').DataTable();
+        } );
+        </script>""")
+        wf.write("<table id='gottcha2_result_table' class='display' style=''>\n")
+        wf.write('<thead><tr>' + ''.join("<th>{0}</th>".format(t) for t in headerlist) + '</tr></thead>\n')
+        wf.write("<tbody>\n")
+        for line in f:
+            if not line.strip():continue
+            wf.write("<tr>\n")
+            temp = [ x.strip() for x in line.split('\t')]
+            wf.write(''.join("<td>{0}</td>".format(t) for t in temp))
+            wf.write("</tr>\n")
+        wf.write("</tbody>\n")
+        wf.write("</table>")
+        wf.write("</body>\n")
+
     def package_folder(self, folder_path, zip_file_name, zip_file_description):
         ''' Simple utility for packaging a folder and saving to shock '''
         if folder_path == self.scratch:
@@ -104,7 +135,7 @@ class metaphlan2:
             raise ValueError('Pass in a list of input references')
             # Start with base cmd and add parameters based on user input
 
-        cmd = ['metaphlan2.py', '--bowtie2db', '/data/metaphlan2/',
+        cmd = ['metaphlan2.py', '--bowtie2db', '/data/metaphlan2/mpa_v20_m200',
                '--mpa_pkl', '/data/metaphlan2/mpa_v20_m200.pkl']
 
         if input_genomes:
@@ -156,30 +187,23 @@ class metaphlan2:
         cmd.insert(-1, str(params['min_cu_len']))
 
         # append output file
-        cmd.append(os.path.join(output_dir, 'report.txt'))
-        cmd00 = ["ls", '/data/metaphlan2/']
-        logging.info(f'cmd {cmd00}')
+        cmd.extend(['--bowtie2out', os.path.join(output_dir, 'report.txt')])
+        cmd00 = ["ls", '-la', '/data/metaphlan2/']
+        logging.info(f'cmd00 {cmd00}')
         pls = subprocess.Popen(cmd00, stdout=subprocess.PIPE,
                                stderr=subprocess.STDOUT)
         logging.info(f'subprocess {pls.communicate()}')
 
         # run pipeline
-        logging.info(f'cmd {cmd}')
+        logging.info(f'cmd {" ".join(cmd)}')
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE,
                              stderr=subprocess.STDOUT)
         logging.info(f'subprocess {p.communicate()}')
 
-        cmd0 = ["ls", output_dir]
-        logging.info(f'cmd {cmd0}')
-        pls = subprocess.Popen(cmd0, stdout=subprocess.PIPE,
-                               stderr=subprocess.STDOUT)
-        logging.info(f'subprocess {pls.communicate()}')
-
-        cmd1 = ["ls", '/data/metaphlan2/']
-        logging.info(f'cmd {cmd1}')
-        pls = subprocess.Popen(cmd1, stdout=subprocess.PIPE,
-                               stderr=subprocess.STDOUT)
-        logging.info(f'subprocess {pls.communicate()}')
+        cmd = ['/kb/module/lib/metaphlan2/src/accessories.sh', os.path.join(output_dir, 'report.txt'), output_dir, 'metaphlan2']
+        p = subprocess.Popen(cmd, stdout=subprocess.PIPE,
+                             stderr=subprocess.STDOUT)
+        logging.info(f'subprocess {p.communicate()}')
 
         # get output file and convert to format for report
         # logging.info(f"params['input_ref'] {params['input_ref']}")
