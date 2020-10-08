@@ -55,7 +55,7 @@ class metaphlan2Test(unittest.TestCase):
             print('Test workspace was deleted')
 
     # NOTE: According to Python unittest naming rules test method names should start from 'test'. # noqa
-    def test_params(self):
+    # def test_params(self):
         # Prepare test objects in workspace if needed using
         # self.getWsClient().save_objects({'workspace': self.getWsName(),
         #                                  'objects': []})
@@ -65,23 +65,23 @@ class metaphlan2Test(unittest.TestCase):
         #
         # Check returned data with
         # self.assertEqual(ret[...], ...) or other unittest methods
-        input_refs = ['22956/3/1']
-        input_genomes = ["79/16/1"]
-        ret = self.serviceImpl.run_metaphlan2(self.ctx, {'workspace_name': self.wsName,
-                                                         'input_ref': input_refs,
-                                                         'tax_level': 'k',
-                                                         'min_cu_len': 1000,
-                                                         'min_alignment_len': 0,
-                                                         'ignore_viruses': 0,
-                                                         'ignore_bacteria': 0,
-                                                         'ignore_eukaryotes': 0,
-                                                         'ignore_archaea': 0,
-                                                         'stat_q': 0.1
-                                                         })
-        print(f'ret {ret[0]}')
-        self.assertIn('MetaPhlAn2 run finished', ret[0]['report_params']['message'])
-
-        input_refs = ['22956/3/1']
+        # input_refs = ['22956/3/1']
+        # input_genomes = ["79/16/1"]
+        # ret = self.serviceImpl.run_metaphlan2(self.ctx, {'workspace_name': self.wsName,
+        #                                                  'input_ref': input_refs,
+        #                                                  'tax_level': 'k',
+        #                                                  'min_cu_len': 1000,
+        #                                                  'min_alignment_len': 0,
+        #                                                  'ignore_viruses': 0,
+        #                                                  'ignore_bacteria': 0,
+        #                                                  'ignore_eukaryotes': 0,
+        #                                                  'ignore_archaea': 0,
+        #                                                  'stat_q': 0.1
+        #                                                  })
+        # print(f'ret {ret[0]}')
+        # self.assertIn('MetaPhlAn2 run finished', ret[0]['report_params']['message'])
+        #
+        # input_refs = ['22956/3/1']
         # ret = self.serviceImpl.run_metaphlan2(self.ctx,
         #                                       {'workspace_name': self.wsName,
         #                                        'input_genomes': input_genomes,
@@ -110,8 +110,8 @@ class metaphlan2Test(unittest.TestCase):
 
         cmd = ['metaphlan2.py', '--bowtie2db', '/data/metaphlan2/',
                '--input_type', 'fastq',
-               '--bowtie2out','/kb/module/work/test_data/metaphlan2_report.txt',
-               '/kb/module/work/test_data/test.fastq']
+               '/kb/module/work/test_data/test.fastq',
+               '/kb/module/work/test_data/metaphlan2_report.txt']
         logging.info(f'cmd {cmd}')
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE,
                              stderr=subprocess.STDOUT)
