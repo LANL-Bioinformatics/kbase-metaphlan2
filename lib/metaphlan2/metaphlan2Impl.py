@@ -37,7 +37,7 @@ class metaphlan2:
     ######################################### noqa
     VERSION = "0.0.2"
     GIT_URL = "git@github.com:LANL-Bioinformatics/kbase-metaphlan2.git"
-    GIT_COMMIT_HASH = "b80496d0b256da0261a2352c474b362f960f241b"
+    GIT_COMMIT_HASH = "8ffe7792cf007f9d89474d3498d4dd940fe774da"
 
     #BEGIN_CLASS_HEADER
     def create_report(self, ws, output_list, html_folder):
