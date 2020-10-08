@@ -265,8 +265,9 @@ class metaphlan2:
 
         Set_types = ["KBaseSets.ReadsSet", "KBaseRNASeq.RNASeqSampleSet"]
         PE_types = ["KBaseFile.PairedEndLibrary", "KBaseAssembly.PairedEndLibrary"]
-        SE_types = ["KBaseFile.SingleEndLibrary", "KBaseAssembly.SingleEndLibrary", "KBaseGenomeAnnotations.Assembly"]
-        acceptable_types = Set_types + PE_types + SE_types
+        SE_types = ["KBaseFile.SingleEndLibrary", "KBaseAssembly.SingleEndLibrary"]
+        assembly_types = ["KBaseGenomeAnnotations.Assembly", "KBaseGenomes.ContigSet"]
+        acceptable_types = PE_types + SE_types + assembly_types
 
         # Determine whether read library or read set is input object
         #
@@ -372,8 +373,9 @@ class metaphlan2:
 
         # Set_types = ["KBaseSets.ReadsSet", "KBaseRNASeq.RNASeqSampleSet"]
         PE_types = ["KBaseFile.PairedEndLibrary", "KBaseAssembly.PairedEndLibrary"]
-        SE_types = ["KBaseFile.SingleEndLibrary", "KBaseAssembly.SingleEndLibrary", "KBaseGenomeAnnotations.Assembly"]
-        acceptable_types = PE_types + SE_types
+        SE_types = ["KBaseFile.SingleEndLibrary", "KBaseAssembly.SingleEndLibrary"]
+        assembly_types = ["KBaseGenomeAnnotations.Assembly", "KBaseGenomes.ContigSet"]
+        acceptable_types = PE_types + SE_types + assembly_types
         # Determine whether read library is of correct type
         #
         try:
@@ -389,7 +391,7 @@ class metaphlan2:
                 params['input_ref']) + ')' + str(e))
 
         input_reads_obj_type = re.sub('-[0-9]+\.[0-9]+$', "", input_reads_obj_type)  # remove trailing version
-        acceptable_types = PE_types + SE_types
+
         if input_reads_obj_type not in acceptable_types:
             raise ValueError(
                 "Input reads of type: '" + input_reads_obj_type + "'.  Must be one of " + ", ".join(
@@ -406,7 +408,7 @@ class metaphlan2:
         #
         try:
             fastq_files, fastq_files_name = [], []
-            if input_reads_obj_type == 'KBaseGenomeAnnotations.Assembly':
+            if input_reads_obj_type in assembly_types:
                 assembly_util = AssemblyUtil(self.callback_url)
                 assembly = assembly_util.get_assembly_as_fasta({'ref': params['input_ref']})
                 logging.info(f"fasta {assembly}")
