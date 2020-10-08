@@ -24,9 +24,9 @@ suggestions:
 parameters :
     input_refs :
         ui-name : |
-            Read library or ReadsSet
+            Read, assembly, or ReadsSet
         short-hint : |
-            The read library or read library set to examine.
+            The read library, assembly library or read library set to examine.
     tax_lev :
         ui-name : |
             Tax level for output
