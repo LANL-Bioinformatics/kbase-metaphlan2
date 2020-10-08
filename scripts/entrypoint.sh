@@ -17,28 +17,28 @@ elif [ "${1}" = "async" ] ; then
   sh ./scripts/run_async.sh
 elif [ "${1}" = "init" ] ; then
   echo "Initialize module"
-  mkdir -p /data/metaphlan2
+  mkdir -p /data/mpa_latest
   cd /data
-  echo "downloading https://edge-dl.lanl.gov/EDGE/dev/edge_dev_metaphlan2DB.tgz"
+  echo "downloading https://edge-dl.lanl.gov/EDGE/dev/edge_dev_metaphlan3DB.tgz"
 
-  if [ -s "/data/metaphlan2/mpa_v20_m200.pkl" ];
+  if [ -s "/data/mpa_latest/mpa_v30_CHOCOPhlAn_201901.pkl" ];
   then
     echo "mpa_v20_m200.1.pkl exists"
   else
-    wget -q https://edge-dl.lanl.gov/EDGE/dev/edge_dev_metaphlan2DB.tgz
-    tar -xvf edge_dev_metaphlan2DB.tgz
-    echo "copying to /data"
-    cp -r database/metaphlan2/ /data/
+    wget -q https://edge-dl.lanl.gov/EDGE/dev/edge_dev_metaphlan3DB.tgz
+    tar -xvf edge_dev_metaphlan3DB.tgz
+#    echo "copying to /data"
+#    cp -r database/mpa_latest/ /data/
 
     chmod -R 777 /data/
-    echo "ls /data/metaphlan2"
-    ls -la /data/metaphlan2/
-    echo "removing database/ and edge_dev_metaphlan2DB.tgz"
-    rm -r database/
-    rm edge_dev_metaphlan2DB.tgz
+    echo "ls /data/metaphlan3"
+    ls -la /data/mpa_latest
+    echo "removing database/ and edge_dev_metaphlan3DB.tgz"
+#    rm -r database/
+    rm edge_dev_metaphlan3DB.tgz
   fi
 
-  if [ -s "/data/metaphlan2/mpa_v20_m200_marker_info.txt" -a -s "/data/metaphlan2/mpa_v20_m200.pkl" -a -s "/data/metaphlan2/mpa_v20_m200.1.bt2" ] ; then
+  if [ -s "/data/mpa_latest/mpa_v30_CHOCOPhlAn_201901.1.bt2" -a -s "/data/mpa_latest/mpa_v30_CHOCOPhlAn_201901.rev.1.bt2" -a -s "/data/mpa_latest/mpa_v30_CHOCOPhlAn_201901.rev.2.bt2"  -a -s "/data/mpa_latest/mpa_v30_CHOCOPhlAn_201901.pkl" ] ; then
     echo "DATA DOWNLOADED SUCCESSFULLY"
     touch /data/__READY__
   else

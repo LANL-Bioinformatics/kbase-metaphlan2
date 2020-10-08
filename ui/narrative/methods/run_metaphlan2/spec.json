@@ -11,27 +11,18 @@
     },
     "parameters": [ 
         {
-            "id": "input_ref",
+            "id": "input_refs",
             "optional": true,
             "advanced": false,
             "allow_multiple": true,
             "default_values": [ "" ],
             "field_type": "text",
             "text_options": {
-                "valid_ws_types": [ "KBaseSets.ReadsSet", "KBaseFile.PairedEndLibrary", "KBaseFile.SingleEndLibrary" ]
+                "valid_ws_types": [ "KBaseSets.ReadsSet", "KBaseFile.PairedEndLibrary", "KBaseFile.SingleEndLibrary",
+                  "KBaseGenomeAnnotations.Assembly", "KBaseFile.AssemblyFile", "KBaseGenomes.ContigSet" ]
             }
         },
-        {
-            "id": "input_genomes",
-            "optional": true,
-            "advanced": false,
-            "allow_multiple": false,
-            "default_values": [ "" ],
-            "field_type": "text",
-            "text_options": {
-                "valid_ws_types": [ "KBaseGenomeAnnotations.Assembly", "KBaseFile.AssemblyFile", "KBaseGenomes.ContigSet" ]
-            }
-        },
+
         {
             "id": "min_cu_len",
             "optional": true,
@@ -187,14 +178,9 @@
                     "target_property": "workspace_id"
                 },
                 {
-                    "input_parameter": "input_ref",
-                    "target_property": "input_ref",
-					"target_type_transform": "list<resolved-ref>"
-                },
-                {
-                    "input_parameter": "input_genomes",
-					"target_property": "input_genomes",
-					"target_type_transform": "list<resolved-ref>"
+                    "input_parameter": "input_refs",
+                    "target_property": "input_refs",
+					"target_type_transform": "list<resolved-refs>"
                 },
 				{
 					"input_parameter": "min_cu_len",

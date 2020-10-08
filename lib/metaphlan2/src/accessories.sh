@@ -6,16 +6,14 @@ PREFIX=$3
 
 rootdir=$( cd $(dirname $0) ; pwd -P )
 export PATH=$rootdir:$PATH;
-#generate out.list
-convert_krakenRep2list.pl < $REPORT > $OUTPATH/$PREFIX.out.list
-convert_krakenRep2tabTree.pl < $REPORT > $OUTPATH/$PREFIX.out.tab_tree
 
-# Make Krona plot
-ktImportText  $OUTPATH/$PREFIX.out.tab_tree -o $OUTPATH/$PREFIX.krona.html
 
-#generate Tree Dendrogram
-phylo_dot_plot.pl -i $OUTPATH/$PREFIX.out.tab_tree -p $OUTPATH/$PREFIX.tree -t 'Kraken2'
+convert_metaphlan2tabTree.pl < $REPORT > $OUTPATH/$PREFIX.out.tab_tree
+mpln2krona.pl -l s -i $REPORT > $OUTPATH/$PREFIX.out.krona
 
-set +xe;
+ktImportText $OUTPATH/$PREFIX.out.krona -o $OUTPATH/$PREFIX.krona.html
+phylo_dot_plot.pl -i $OUTPATH/$PREFIX.out.tab_tree -p $OUTPATH/$PREFIX.tree -t 'Metaphlan'
+
+set +ex;
 echo "";
 echo "[END] $OUTPATH $PREFIX";

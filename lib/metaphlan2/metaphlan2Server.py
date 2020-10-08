@@ -342,6 +342,10 @@ class Application(object):
                              name='metaphlan2.run_metaphlan2',
                              types=[dict])
         self.method_authentication['metaphlan2.run_metaphlan2'] = 'required'  # noqa
+        self.rpc_service.add(impl_metaphlan2.exec_metaphlan,
+                             name='metaphlan2.exec_metaphlan',
+                             types=[dict])
+        self.method_authentication['metaphlan2.exec_metaphlan'] = 'required'  # noqa
         self.rpc_service.add(impl_metaphlan2.status,
                              name='metaphlan2.status',
                              types=[dict])

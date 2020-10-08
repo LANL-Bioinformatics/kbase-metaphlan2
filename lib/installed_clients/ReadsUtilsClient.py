@@ -43,7 +43,7 @@ class ReadsUtils(object):
         """
         Validate a FASTQ file. The file extensions .fq, .fnq, and .fastq
         are accepted. Note that prior to validation the file will be altered in
-        place to remove blank lines if any exist.
+        place to remove blank lines and CRLF characters if any exist.
         :param params: instance of list of type "ValidateFASTQParams" (Input
            to the validateFASTQ function. Required parameters: file_path -
            the path to the file to validate. Optional parameters: interleaved
