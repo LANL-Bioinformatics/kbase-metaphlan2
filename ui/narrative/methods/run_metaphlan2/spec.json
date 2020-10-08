@@ -180,7 +180,7 @@
                 {
                     "input_parameter": "input_refs",
                     "target_property": "input_refs",
-					"target_type_transform": "list<resolved-refs>"
+					"target_type_transform": "list<resolved-ref>"
                 },
 				{
 					"input_parameter": "min_cu_len",
