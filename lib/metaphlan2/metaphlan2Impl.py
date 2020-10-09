@@ -452,11 +452,11 @@ class metaphlan2:
         fastq_files_string = ' '.join(fastq_files)
         # append output file
         # cmd.extend([os.path.join(output_dir, 'report.txt')])
-        # cmd00 = ["ls", '-la', '/data/mpa_latest/']
-        # # logging.info(f'cmd00 {cmd00}')
-        # pls = subprocess.Popen(cmd00, stdout=subprocess.PIPE,
-        #                        stderr=subprocess.STDOUT)
-        # logging.info('subprocess %s'.format(pls.communicate()))
+        cmd00 = ["ls", '-la', '/data/mpa_latest/']
+        # logging.info(f'cmd00 {cmd00}')
+        pls = subprocess.Popen(cmd00, stdout=subprocess.PIPE,
+                               stderr=subprocess.STDOUT)
+        logging.info('subprocess %s'.format(pls.communicate()))
         # cmd01 = ["metaphlan --version"]
         # # logging.info(f'cmd00 {cmd00}')
         # pls = subprocess.Popen(cmd01, stdout=subprocess.PIPE,
@@ -464,10 +464,10 @@ class metaphlan2:
         # logging.info('subprocess %s'.format(pls.communicate()))
         # run pipeline
         # logging.info(f'cmd %s'.format(cmd))
-        cmd00 = ["ls", '-la', '/kb/module/work']
+        cmd00 = ['ls', '-la', '/kb/module/work']
         logging.info(f'cmd00 {cmd00}')
         pls = subprocess.Popen(cmd00, stdout=subprocess.PIPE,
-                               stderr=subprocess.STDOUT)
+                               stderr=subprocess.STDOUT, shell=True)
         logging.info('ls scratch %s'.format(pls.communicate()))
         outprefix = "metaphlan2"
         report_file = os.path.join(output_dir, f'{outprefix}_report.txt')
@@ -480,7 +480,7 @@ class metaphlan2:
         cmd00 = ['ls', '/kb/module']
         logging.info(f'cmd00 {cmd00}')
         pls = subprocess.Popen(cmd00, stdout=subprocess.PIPE,
-                               stderr=subprocess.STDOUT)
+                               stderr=subprocess.STDOUT, shell=True)
         logging.info('ls output_dir %s'.format(pls.communicate()))
         # cmd = ['/kb/module/lib/metaphlan2/src/metaphlan.sh', '-d', '/data/mpa_latest/', '-f', input_type, '-i',
         #        fastq_files_string, '-o', output_dir, '-p', outprefix]
