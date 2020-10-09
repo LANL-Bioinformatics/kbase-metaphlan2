@@ -178,7 +178,7 @@ class metaphlan2:
             raise ValueError('Pass in a list of input references')
             # Start with base cmd and add parameters based on user input
 
-        cmd = ['metaphlan2.py', '--bowtie2db', '/data/metaphlan2/mpa_v20_m200',
+        cmd = ['metaphlan2.py', '--bowtie2db', '/data/metaphlan2/',
                '--mpa_pkl', '/data/metaphlan2/mpa_v20_m200.pkl']
 
         if input_genomes:
