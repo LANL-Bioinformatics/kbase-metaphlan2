@@ -4,7 +4,7 @@
 name: MetaPhlAn2 Taxonomic Sequence Classifier
 
 tooltip: |
-    Perform perform taxonomic classification of fastq files
+    Perform perform taxonomic classification of fastq and fasta files
 
 screenshots: []
 
@@ -22,16 +22,11 @@ suggestions:
 # Configure the display and description of parameters
 #
 parameters :
-    input_ref :
-        ui-name : |
-            Read library or ReadsSet
-        short-hint : |
-            The read library or read library set to examine.
-    input_genomes:
+    input_refs:
         ui-name: |
-            Assembly
+            Read, assembly, or ReadsSet
         short-hint: |
-            The assembly library set to examine
+            The read library, assembly library or read library set to examine.
     tax_lev :
         ui-name : |
             Tax level for output

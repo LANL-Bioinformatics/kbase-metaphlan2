@@ -12,5 +12,6 @@ module metaphlan2 {
         This example function accepts any number of parameters and returns results in a KBaseReport
     */
     funcdef run_metaphlan2(mapping<string,UnspecifiedObject> params) returns (ReportResults output) authentication required;
+    funcdef exec_metaphlan2(mapping<string,UnspecifiedObject> params) returns (ReportResults output) authentication required;
 
 };
