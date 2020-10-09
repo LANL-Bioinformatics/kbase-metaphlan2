@@ -449,6 +449,8 @@ class metaphlan2:
         output_dir = params['output_dir']
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
+        logging.info(os.listdir('/kb/module/work/'))
+        logging.info(os.listdir('/data/mpa_latest'))
         fastq_files_string = ' '.join(fastq_files)
         # append output file
         # cmd.extend([os.path.join(output_dir, 'report.txt')])
