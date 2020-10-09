@@ -1,6 +1,7 @@
 FROM kbase/sdkbase2:python
 MAINTAINER Mark Flynn
-
+RUN mkdir -p /kb/data
+COPY ./data/ /kb/data/
 RUN conda install -yc bioconda pandas metaphlan2 && \
     pip install coverage && \
     conda clean -ya
@@ -20,7 +21,7 @@ USER root
 COPY ./ /kb/module
 RUN mkdir -p /kb/module/work
 RUN chmod -R a+rw /kb/module
-RUN chmod +x /kb/module/lib/metaphlan2/src/accessories.sh
+RUN chmod -R +x /kb/module/lib/metaphlan2/src/
 RUN cp /kb/module/lib/metaphlan2/src/metaphlan2.py /miniconda/bin/
 WORKDIR /kb/module
 
