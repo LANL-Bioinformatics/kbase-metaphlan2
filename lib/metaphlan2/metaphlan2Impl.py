@@ -464,7 +464,7 @@ class metaphlan2:
         # logging.info('subprocess %s'.format(pls.communicate()))
         # run pipeline
         # logging.info(f'cmd %s'.format(cmd))
-        cmd00 = ["ls", '-la', self.scratch]
+        cmd00 = ["ls", '-la', '/kb/module/work']
         logging.info(f'cmd00 {cmd00}')
         pls = subprocess.Popen(cmd00, stdout=subprocess.PIPE,
                                stderr=subprocess.STDOUT)
