@@ -37,7 +37,7 @@ class metaphlan2:
     ######################################### noqa
     VERSION = "0.0.2"
     GIT_URL = "git@github.com:LANL-Bioinformatics/kbase-metaphlan2.git"
-    GIT_COMMIT_HASH = "8ffe7792cf007f9d89474d3498d4dd940fe774da"
+    GIT_COMMIT_HASH = "383654c197f551884701921f5e78918e10caeeb6"
 
     #BEGIN_CLASS_HEADER
     def create_report(self, ws, output_list, html_folder):
@@ -472,6 +472,12 @@ class metaphlan2:
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE,
                              stderr=subprocess.STDOUT)
         logging.info('metaphlan %s'.format(p.communicate()))
+
+        cmd00 = ["ls", '-la', output_dir]
+        logging.info(f'cmd00 {cmd00}')
+        pls = subprocess.Popen(cmd00, stdout=subprocess.PIPE,
+                               stderr=subprocess.STDOUT)
+        logging.info('ls output_dir %s'.format(pls.communicate()))
         # cmd = ['/kb/module/lib/metaphlan2/src/metaphlan.sh', '-d', '/data/mpa_latest/', '-f', input_type, '-i',
         #        fastq_files_string, '-o', output_dir, '-p', outprefix]
         # p = subprocess.Popen(cmd, stdout=subprocess.PIPE,
