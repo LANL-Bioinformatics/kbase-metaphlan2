@@ -473,7 +473,7 @@ class metaphlan2:
                              stderr=subprocess.STDOUT)
         logging.info('metaphlan %s'.format(p.communicate()))
 
-        cmd00 = ["ls", '-la', output_dir]
+        cmd00 = ["ls", '-la', self.scratch]
         logging.info(f'cmd00 {cmd00}')
         pls = subprocess.Popen(cmd00, stdout=subprocess.PIPE,
                                stderr=subprocess.STDOUT)
