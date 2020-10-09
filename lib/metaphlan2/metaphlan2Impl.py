@@ -464,7 +464,11 @@ class metaphlan2:
         # logging.info('subprocess %s'.format(pls.communicate()))
         # run pipeline
         # logging.info(f'cmd %s'.format(cmd))
-
+        cmd00 = ["ls", '-la', self.scratch]
+        logging.info(f'cmd00 {cmd00}')
+        pls = subprocess.Popen(cmd00, stdout=subprocess.PIPE,
+                               stderr=subprocess.STDOUT)
+        logging.info('ls scratch %s'.format(pls.communicate()))
         outprefix = "metaphlan2"
         report_file = os.path.join(output_dir, f'{outprefix}_report.txt')
         cmd = ['metaphlan', '--bowtie2db', '/data/mpa_latest/','--input_type', input_type,
