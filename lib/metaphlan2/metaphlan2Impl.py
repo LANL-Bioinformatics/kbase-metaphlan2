@@ -474,7 +474,7 @@ class metaphlan2:
         cmd = ['metaphlan', '--bowtie2db', '/data/mpa_latest/','--input_type', input_type,
                fastq_files_string, report_file]
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE,
-                             stderr=subprocess.STDOUT)
+                             stderr=subprocess.STDOUT, shell=True)
         logging.info('metaphlan %s'.format(p.communicate()))
 
         cmd00 = ["ls", '-la', self.scratch]
@@ -487,12 +487,12 @@ class metaphlan2:
         # p = subprocess.Popen(cmd, stdout=subprocess.PIPE,
         #                      stderr=subprocess.STDOUT)
         # logging.info('subprocess %s'.format(p.communicate()))
-        # metaphlan_report_df = pd.read_csv(report_file, skiprows=3, sep='\t')
-        # metaphlan_report_df[['#clade_name', 'relative_abundance']].to_csv(report_file, index=False, sep='\t')
-        # cmd = ['/kb/module/lib/metaphlan2/src/accessories.sh', report_file, output_dir, outprefix]
-        # p = subprocess.Popen(cmd, stdout=subprocess.PIPE,
-        #                      stderr=subprocess.STDOUT)
-        # logging.info('accessories.sh %s'.format(p.communicate()))
+        metaphlan_report_df = pd.read_csv(report_file, skiprows=3, sep='\t')
+        metaphlan_report_df[['#clade_name', 'relative_abundance']].to_csv(report_file, index=False, sep='\t')
+        cmd = ['/kb/module/lib/metaphlan2/src/accessories.sh', report_file, output_dir, outprefix]
+        p = subprocess.Popen(cmd, stdout=subprocess.PIPE,
+                             stderr=subprocess.STDOUT)
+        logging.info('accessories.sh %s'.format(p.communicate()))
 
         # generate report directory and html file
         if len(input_reads_obj_info[NAME_I].split('.')) > 1:
