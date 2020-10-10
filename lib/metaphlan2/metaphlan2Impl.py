@@ -265,7 +265,7 @@ class metaphlan2:
         PE_types = ["KBaseFile.PairedEndLibrary", "KBaseAssembly.PairedEndLibrary"]
         SE_types = ["KBaseFile.SingleEndLibrary", "KBaseAssembly.SingleEndLibrary"]
         assembly_types = ["KBaseGenomeAnnotations.Assembly", "KBaseGenomes.ContigSet"]
-        acceptable_types = PE_types + SE_types + assembly_types
+        acceptable_types = Set_types + PE_types + SE_types + assembly_types
 
         # Determine whether read library or read set is input object
         #
