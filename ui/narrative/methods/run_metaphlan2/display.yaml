@@ -27,11 +27,6 @@ parameters :
             Read library or ReadsSet
         short-hint : |
             The read library or read library set to examine.
-    input_genomes:
-        ui-name: |
-            Assembly
-        short-hint: |
-            The assembly library set to examine
     tax_lev :
         ui-name : |
             Tax level for output

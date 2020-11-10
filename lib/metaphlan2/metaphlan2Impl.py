@@ -68,9 +68,9 @@ class metaphlan2:
         with open(os.path.join(output_dir, 'df_style.css'), 'w') as fp:
             css_string = '''
             .mystyle {
-                font-size: 11pt; 
+                font-size: 11pt;
                 font-family: Arial;
-                border-collapse: collapse; 
+                border-collapse: collapse;
                 border: 1px solid silver;
 
             }
@@ -150,9 +150,9 @@ class metaphlan2:
         # Check parameters
         logging.info(f'params {params}')
         # Check for presence of input file types in params
-        input_genomes = 'input_genomes' in params and len(
-            params['input_genomes']) > 0 and None not in params[
-                            'input_genomes']
+        # input_genomes = 'input_genomes' in params and len(
+        #     params['input_genomes']) > 0 and None not in params[
+        #                     'input_genomes']
         input_refs = 'input_ref' in params and len(
             params['input_ref']) > 0 and None not in params['input_ref']
 
@@ -160,17 +160,17 @@ class metaphlan2:
         #     if name not in params:
         #         raise ValueError(
         #             'Parameter "' + name + '" is required but missing')
-        if not input_genomes and not input_refs:
+        if not input_refs:
             raise ValueError(
-                'You must enter either an input genome or input reads')
+                'You must enter input reads')
 
-        if input_refs and input_genomes:
-            raise ValueError(
-                'You must enter either an input genome or input reads, '
-                'but not both')
+        # if input_refs and input_genomes:
+        #     raise ValueError(
+        #         'You must enter either an input genome or input reads, '
+        #         'but not both')
 
-        if input_genomes and (not isinstance(params['input_genomes'][0], str)):
-            raise ValueError('Pass in a valid input genome string')
+        # if input_genomes and (not isinstance(params['input_genomes'][0], str)):
+        #     raise ValueError('Pass in a valid input genome string')
 
         if input_refs and (
                 not isinstance(params['input_ref'], list) or not len(
@@ -181,14 +181,14 @@ class metaphlan2:
         cmd = ['metaphlan2.py', '--bowtie2db', '/data/metaphlan2/mpa_v20_m200',
                '--mpa_pkl', '/data/metaphlan2/mpa_v20_m200.pkl']
 
-        if input_genomes:
-            assembly_util = AssemblyUtil(self.callback_url)
-            fasta_file_obj = assembly_util.get_assembly_as_fasta(
-                {'ref': params['input_genomes'][0]})
-            logging.info(fasta_file_obj)
-            fasta_file = fasta_file_obj['path']
-
-            cmd.extend(['--input_type', 'fasta', fasta_file])
+        # if input_genomes:
+        #     assembly_util = AssemblyUtil(self.callback_url)
+        #     fasta_file_obj = assembly_util.get_assembly_as_fasta(
+        #         {'ref': params['input_genomes'][0]})
+        #     logging.info(fasta_file_obj)
+        #     fasta_file = fasta_file_obj['path']
+        #
+        #     cmd.extend(['--input_type', 'fasta', fasta_file])
 
         if input_refs:
             logging.info('Downloading Reads data as a Fastq file.')
