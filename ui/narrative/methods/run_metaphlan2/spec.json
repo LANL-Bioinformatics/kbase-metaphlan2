@@ -1,5 +1,5 @@
 {
-    "ver": "0.0.1",
+    "ver": "0.0.3",
     "authors": [
         "mcflynn617"
     ],
@@ -9,7 +9,7 @@
         "input": null,
         "output": null
     },
-    "parameters": [ 
+    "parameters": [
         {
             "id": "input_ref",
             "optional": true,
@@ -19,17 +19,6 @@
             "field_type": "text",
             "text_options": {
                 "valid_ws_types": [ "KBaseSets.ReadsSet", "KBaseFile.PairedEndLibrary", "KBaseFile.SingleEndLibrary" ]
-            }
-        },
-        {
-            "id": "input_genomes",
-            "optional": true,
-            "advanced": false,
-            "allow_multiple": false,
-            "default_values": [ "" ],
-            "field_type": "text",
-            "text_options": {
-                "valid_ws_types": [ "KBaseGenomeAnnotations.Assembly", "KBaseFile.AssemblyFile", "KBaseGenomes.ContigSet" ]
             }
         },
         {
